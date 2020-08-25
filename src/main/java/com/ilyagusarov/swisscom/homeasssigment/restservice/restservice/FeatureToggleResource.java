@@ -29,7 +29,7 @@ public class FeatureToggleResource {
         return featureToggleOptional.get();
     }
 
-    @PostMapping("/feature-toggles/")
+    @PostMapping("/feature-toggles")
     public ResponseEntity<Object> createFeatureToggle(@RequestBody FeatureToggle featureToggle) {
         FeatureToggle savedFeatureToggle = featureToggleRepository.save(featureToggle);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -50,7 +50,7 @@ public class FeatureToggleResource {
     }
 
     @DeleteMapping("/feature-toggles/{id}")
-    public void deleteStudent(@PathVariable long id) {
+    public void deleteFeatureToggle(@PathVariable long id) {
         featureToggleRepository.deleteById(id);
     }
 }
