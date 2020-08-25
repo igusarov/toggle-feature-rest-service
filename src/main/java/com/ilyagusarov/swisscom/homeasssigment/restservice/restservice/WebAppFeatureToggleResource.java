@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class FeatureToggleResource {
+public class WebAppFeatureToggleResource {
 
     @Autowired
     private FeatureToggleRepository featureToggleRepository;
