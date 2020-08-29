@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(WebAppCustomerController.class)
-public class WebAppCustomerControllerTest {
+public class WebAppCustomerControllerTests {
 
     public static List<Customer> customers;
 

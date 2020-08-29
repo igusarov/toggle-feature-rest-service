@@ -7,7 +7,7 @@ import static org.junit.Assert.assertFalse;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class ServiceApiControllerTest {
+public class ServiceApiControllerTests {
     private FeatureToggle createFeatureToggle() {
         return new FeatureToggle(
                 (long) 1,
