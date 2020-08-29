@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-public class ServiceApiResource {
+public class ServiceApiController {
 
     @Autowired
     private FeatureToggleRepository featureToggleRepository;
@@ -24,22 +24,20 @@ public class ServiceApiResource {
                 .collect(Collectors.toSet());
         List<FeatureToggle> foundFeatureToggles = featureToggleRepository.findByTechnicalNameIn(names);
         List<ServiceApiFeatureDto> result = new LinkedList<>();
-        foundFeatureToggles.forEach((item) -> {
-            result.add(convertToDto(item, customerId, LocalDateTime.now()));
-        });
+        foundFeatureToggles.forEach((item) -> result.add(convertToDto(item, customerId, LocalDateTime.now())));
         return result;
     }
 
     private ServiceApiFeatureDto convertToDto(FeatureToggle featureToggle, Long userId, LocalDateTime currentTime) {
-        Boolean isCustomerInList = featureToggle.getCustomers().stream()
-                .map((item) -> item.getId())
+        boolean isCustomerInList = featureToggle.getCustomers().stream()
+                .map(Customer::getId)
                 .collect(Collectors.toSet())
                 .contains(userId);
 
         LocalDateTime expiresOn = featureToggle.getExpiresOn();
-        Boolean isExpired =  expiresOn != null && expiresOn.isBefore(currentTime);
+        boolean isExpired =  expiresOn != null && expiresOn.isBefore(currentTime);
 
-        ServiceApiFeatureDto featureDto = new ServiceApiFeatureDto(
+        return new ServiceApiFeatureDto(
                 featureToggle.getTechnicalName(),
                 // true when:
                 // - customer is in the list of the feature toggle and feature toggle is not inverted and is not in archive
@@ -49,7 +47,5 @@ public class ServiceApiResource {
                 featureToggle.getInverted(),
                 isExpired
         );
-
-        return featureDto;
     }
 }
