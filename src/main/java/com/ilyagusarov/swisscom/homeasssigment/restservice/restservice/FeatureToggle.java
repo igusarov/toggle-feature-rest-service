@@ -2,8 +2,7 @@ package com.ilyagusarov.swisscom.homeasssigment.restservice.restservice;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 public class FeatureToggle {
@@ -22,7 +21,7 @@ public class FeatureToggle {
             name = "feature_toggle_customer",
             joinColumns = @JoinColumn(name = "feature_toggle_id"),
             inverseJoinColumns = @JoinColumn(name = "customer_id"))
-    private Set<Customer> customers;
+    private List<Customer> customers;
 
     public FeatureToggle() {
         super();
@@ -35,7 +34,8 @@ public class FeatureToggle {
             LocalDateTime expiresOn,
             String description,
             Boolean inverted,
-            Boolean archive
+            Boolean archive,
+            List<Customer> customers
     ) {
         super();
         this.id = id;
@@ -45,6 +45,7 @@ public class FeatureToggle {
         this.description = description;
         this.inverted = inverted;
         this.archive = archive;
+        this.customers = customers;
     }
 
     public Long getId() {
@@ -95,11 +96,11 @@ public class FeatureToggle {
         this.inverted = inverted;
     }
 
-    public Set<Customer> getCustomers() {
+    public List<Customer> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(Set<Customer> customers) {
+    public void setCustomers(List<Customer> customers) {
         this.customers = customers;
     }
 

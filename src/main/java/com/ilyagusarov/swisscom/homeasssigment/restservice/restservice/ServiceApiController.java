@@ -3,19 +3,21 @@ package com.ilyagusarov.swisscom.homeasssigment.restservice.restservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@RequestMapping("/api/v1")
 @RestController
 public class ServiceApiController {
 
     @Autowired
     private FeatureToggleRepository featureToggleRepository;
 
-    @PostMapping("/api/v1/features")
+    @PostMapping("/features")
     public List<ServiceApiFeatureDto> retrieveFeatures(@RequestBody HashMap<String, FeatureRequestDto> requestBody) {
         FeatureRequestDto featureRequestDao = requestBody.get("featureRequest");
         Long customerId = featureRequestDao.getCustomerId();
@@ -28,7 +30,7 @@ public class ServiceApiController {
         return result;
     }
 
-    private ServiceApiFeatureDto convertToDto(FeatureToggle featureToggle, Long userId, LocalDateTime currentTime) {
+    public static ServiceApiFeatureDto convertToDto(FeatureToggle featureToggle, Long userId, LocalDateTime currentTime) {
         boolean isCustomerInList = featureToggle.getCustomers().stream()
                 .map(Customer::getId)
                 .collect(Collectors.toSet())
@@ -40,10 +42,10 @@ public class ServiceApiController {
         return new ServiceApiFeatureDto(
                 featureToggle.getTechnicalName(),
                 // true when:
-                // - customer is in the list of the feature toggle and feature toggle is not inverted and is not in archive
-                // - customer is NOT in the list of the feature, but feature toggle expired and feature toggle is not in archive
+                // - customer is in the list AND is not inverted AND is not in archive AND is not expired
+                // - customer is not in the list AND is expired AND is not in archive
                 !featureToggle.getArchive() &&
-                        ((isCustomerInList && !featureToggle.getInverted()) || (!isCustomerInList && isExpired)),
+                        ((isCustomerInList && !featureToggle.getInverted() && !isExpired) || (!isCustomerInList && isExpired)),
                 featureToggle.getInverted(),
                 isExpired
         );
