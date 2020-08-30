@@ -38,8 +38,6 @@ public class WebAppCustomerControllerTests {
 
     @Test
     public void getCustomers_shouldReturn200WithAllCustomers_WhenNoStartsWithParameterPassed() throws Exception {
-
-
         when(customerRepository.findAll()).thenReturn(customers);
         mvc.perform(MockMvcRequestBuilders.get("/customers")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -50,10 +48,7 @@ public class WebAppCustomerControllerTests {
 
     @Test
     public void getCustomers_shouldReturn200WithFoundCustomers_WhenStartsWithParameterPassed() throws Exception {
-        Customer ilya = new Customer((long)1, "Ilya");
-        List<Customer> customers = Arrays.asList(ilya);
         String startsWith = "foo";
-
         when(customerRepository.findByDisplayNameStartsWith(startsWith)).thenReturn(customers);
         mvc.perform(MockMvcRequestBuilders.get("/customers")
                 .contentType(MediaType.APPLICATION_JSON)
