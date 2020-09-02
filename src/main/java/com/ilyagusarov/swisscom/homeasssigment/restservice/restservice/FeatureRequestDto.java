@@ -1,30 +1,48 @@
 package com.ilyagusarov.swisscom.homeasssigment.restservice.restservice;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class FeatureRequestDto {
-    private Long customerId;
-    private List<HashMap<String, String>> features;
+    private FeatureRequest featureRequest;
 
-    public FeatureRequestDto(Long customerId, List<HashMap<String, String>> features) {
-        this.customerId = customerId;
-        this.features = features;
+    public FeatureRequest getFeatureRequest() {
+        return featureRequest;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public void setFeatureRequest(FeatureRequest featureRequest) {
+        this.featureRequest = featureRequest;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
+    public static class FeatureRequest {
+        private long customerId;
+        private List<Feature> features;
 
-    public List<HashMap<String, String>> getFeatures() {
-        return features;
-    }
+        public long getCustomerId() {
+            return customerId;
+        }
 
-    public void setFeatures(List<HashMap<String, String>> features) {
-        this.features = features;
-    }
+        public void setCustomerId(long customerId) {
+            this.customerId = customerId;
+        }
+
+        public List<Feature> getFeatures() {
+            return features;
+        }
+
+        public void setFeatures(List<Feature> features) {
+            this.features = features;
+        }
+
+        public static class Feature {
+           private String name;
+
+           public String getName() {
+               return name;
+           }
+
+           public void setName(String name) {
+               this.name = name;
+           }
+       }
+   }
 }

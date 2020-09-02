@@ -18,11 +18,10 @@ public class ServiceApiController {
     private FeatureToggleRepository featureToggleRepository;
 
     @PostMapping("/features")
-    public List<ServiceApiFeatureDto> retrieveFeatures(@RequestBody HashMap<String, FeatureRequestDto> requestBody) {
-        FeatureRequestDto featureRequestDao = requestBody.get("featureRequest");
-        Long customerId = featureRequestDao.getCustomerId();
-        Set<String> names = featureRequestDao.getFeatures().stream()
-                .map((item) -> item.get("name"))
+    public List<ServiceApiFeatureDto> retrieveFeatures(@RequestBody FeatureRequestDto requestBody) {
+        Long customerId = requestBody.getFeatureRequest().getCustomerId();
+        Set<String> names = requestBody.getFeatureRequest().getFeatures().stream()
+                .map((item) -> item.getName())
                 .collect(Collectors.toSet());
         List<FeatureToggle> foundFeatureToggles = featureToggleRepository.findByTechnicalNameIn(names);
         List<ServiceApiFeatureDto> result = new LinkedList<>();
